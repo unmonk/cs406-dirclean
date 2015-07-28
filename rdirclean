@@ -1,0 +1,80 @@
+#!/bin/bash
+
+TESTOPT=0
+rootdir=
+pattern=
+
+#Check for number of arguments. if less than two or more than three, show usage. 
+if [[ $# -lt 2  || $# -gt 3 ]]; then
+	echo "Usage: dirclean [--test] ROOT_DIRECTORY 'PATTERN'"
+	exit 1
+fi
+
+#Force checking for --test / -t instead of using getopt or getopts
+#sets a TESTOPT Variable to true if test is first argument. Otherwise, the first arg is the directory
+if [[ $1 = "--test" ]] ||[[ $1 = "-t" ]] || [[ $1 = "--TEST" ]] || [[ $1 = "-T" ]]; then
+	TESTOPT=1
+	echo "Test Mode Activated"
+	
+	rootdir=$2
+	pattern=$3
+	if [[ ! -d $rootdir ]]; then
+		echo $rootdir "is not a valid directory"
+		exit 1
+	fi
+	
+else
+	#Check directory, works both path types
+	rootdir=$1
+	pattern=$2
+	if [[ ! -d $rootdir ]]; then
+		echo $rootdir "is not a valid directory"
+		exit 1
+	fi	
+fi
+
+#Check for files matching pattern and removes if not testmode
+for file in $rootdir/$pattern; do
+	if [[ -f $file ]]; then
+		if [[ TESTOPT=1 ]]; then
+			echo "Deleting:" $file
+		else
+			echo "Deleting:" $file
+			rm $file
+		fi
+	fi
+done
+
+#Check for hidden files matching pattern and removes if not testmode
+for file in $rootdir/.$pattern; do
+	if [[ -f $file ]]; then
+		if [[ TESTOPT=1 ]]; then
+			echo "Deleting:" $file
+		else
+			echo "Deleting:" $file
+			rm $file
+		fi
+	fi
+done
+
+if [[ "$0" = /* ]]; then
+	scriptpath=$0
+else
+	scriptpath=$(pwd)/$0
+fi
+
+
+for directory in $rootdir/*; do
+	if [[ -d $directory ]]; then
+		exec $scriptpath $directory "$pattern"
+	fi
+done
+
+
+
+
+
+
+
+
+		
