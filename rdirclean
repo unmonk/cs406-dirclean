@@ -61,13 +61,14 @@ for file in $rootdir/.$pattern; do
 	fi
 done
 
+#set the path of the script.
 if [[ "$0" = /* ]]; then
 	scriptpath=$0
 else
 	scriptpath=$(pwd)/$0
 fi
 
-
+#Call the script for each directory in the inital rootdirectory
 for directory in $rootdir/*; do
 	if [[ -d $directory ]]; then
 		exec $scriptpath $directory "$pattern"
