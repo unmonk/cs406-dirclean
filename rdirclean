@@ -1,4 +1,8 @@
 #!/bin/bash
+#Scott Weaver
+#http://github.com/unmonk
+#CC0 License
+#recursively delete files based on pattern without using find.  CS406 summer
 
 TESTOPT=0
 rootdir=
