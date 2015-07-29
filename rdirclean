@@ -1,5 +1,5 @@
 #!/bin/bash
-#Scott Weaver
+#Scott Weaver & Ethan Richardson
 #http://github.com/unmonk
 #CC0 License
 #recursively delete files based on pattern without using find.  CS406 summer
@@ -9,14 +9,20 @@ rootdir=
 pattern=
 
 #Check for number of arguments. if less than two or more than three, show usage. 
-if [[ $# -lt 2  || $# -gt 3 ]]; then
-	echo "Usage: dirclean [--test] ROOT_DIRECTORY 'PATTERN'"
+if [[ $# -lt 2  ]]; then
+	echo "Usage: rdirclean [--test] ROOT_DIRECTORY 'PATTERN'"
 	exit 1
 fi
 
 #Force checking for --test / -t instead of using getopt or getopts
 #sets a TESTOPT Variable to true if test is first argument. Otherwise, the first arg is the directory
 if [[ $1 = "--test" ]] ||[[ $1 = "-t" ]] || [[ $1 = "--TEST" ]] || [[ $1 = "-T" ]]; then
+	#If --test supplied, must have 3 or more args instead	
+	if [[ $# -lt 3 ]]; then
+		echo "Usage: rdirclean [--test] ROOT_DIRECTORY 'PATTERN'"
+		exit 1
+	fi
+
 	TESTOPT=1
 	echo "Test Mode Activated"
 	
@@ -76,10 +82,7 @@ for directory in $rootdir/*; do
 done
 
 
+#On Success
+exit 0
 
-
-
-
-
-
-		
+#EOF		
