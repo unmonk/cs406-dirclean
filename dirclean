@@ -52,7 +52,7 @@ do
 				echo "Deleting:" $file
 			else
 				echo "Deleting:" $file
-				rm $rootdir/$file
+				rm -f $rootdir/$file
 			fi
 		fi
 	done
