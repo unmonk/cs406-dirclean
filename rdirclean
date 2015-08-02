@@ -42,25 +42,25 @@ do
 				echo "Deleting:" $file
 			else
 				echo "Deleting:" $file
-				rm -f $rootdir/$file
+				rm $rootdir/$file
 			fi
 		fi
 	done
-
-
-	if [[ "$0" = /* ]]; then
-		scriptpath=$0
-	else
-		scriptpath=$(pwd)/$0
-	fi
-
-
-	for directory in $rootdir/*; do
-		if [[ -d $directory ]]; then
-			exec $scriptpath "$directory" "$pattern"
-		fi
-	done
 done
+
+if [[ "$0" = /* ]]; then
+	scriptpath=$0
+else
+	scriptpath=$(pwd)/$0
+fi
+
+
+for directory in $rootdir/*; do
+	if [[ -d $directory ]]; then
+		exec $scriptpath "$directory" "$@"
+	fi
+done
+
 
 
 
