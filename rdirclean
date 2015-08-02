@@ -43,20 +43,8 @@ else
 	fi	
 fi
 
-#Check for files matching pattern and removes if not testmode
-for file in $rootdir/$pattern; do
-	if [[ -f $file ]]; then
-		if [[ TESTOPT=1 ]]; then
-			echo "Deleting:" $file
-		else
-			echo "Deleting:" $file
-			rm $file
-		fi
-	fi
-done
-
-#Check for hidden files matching pattern and removes if not testmode
-for file in $rootdir/.$pattern; do
+#Check for files or hidden files matching pattern and removes if not testmode
+for file in $rootdir/$pattern $rootdir/.$pattern; do
 	if [[ -f $file ]]; then
 		if [[ TESTOPT=1 ]]; then
 			echo "Deleting:" $file
@@ -85,4 +73,4 @@ done
 #On Success
 exit 0
 
-#EOF		
+#EOF
