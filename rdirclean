@@ -2,7 +2,7 @@
 #Scott Weaver & Ethan Richardson
 #http://github.com/unmonk
 #CC0 License
-#delete files based on pattern without using find.  CS406 summer
+#recursively delete files based on pattern without using find.  CS406 summer
 
 TESTOPT=0
 rootdir=
