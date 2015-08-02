@@ -39,7 +39,7 @@ fi
 #Check for files matching pattern and removes if not testmode
 for pattern in "$@"
 do
-	for file in $rootdir/$pattern $rootdir/.$pattern; do
+	for file in $rootdir/$pattern $rootdir/.$pattern $rootdir/"$pattern" $rootdir/."$pattern"; do
 		if [[ -f $file ]]; then
 			if [[ TESTOPT=1 ]]; then
 				echo "Deleting:" $file
@@ -64,11 +64,7 @@ for directory in $rootdir/*; do
 	fi
 done
 
-
-
-
-
-
-
-
-		
+#On Success
+exit 0
+	
+# EOF

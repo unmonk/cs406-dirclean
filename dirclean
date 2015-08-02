@@ -46,7 +46,7 @@ fi
 
 for pattern in "$@"
 do
-	for file in $rootdir/$pattern $rootdir/.$pattern; do
+	for file in $rootdir/$pattern $rootdir/.$pattern $rootdir/"$pattern" $rootdir/."$pattern"; do
 		if [[ -f $file ]]; then
 			if [[ TESTOPT=1 ]]; then
 				echo "Deleting:" $file
