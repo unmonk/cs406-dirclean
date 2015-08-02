@@ -6,7 +6,6 @@
 
 TESTOPT=0
 rootdir=
-pattern=
 
 #Check for number of arguments. if less than two, show usage. 
 if [[ $# -lt 2 ]]; then
@@ -27,32 +26,36 @@ if [[ $1 = "--test" ]] ||[[ $1 = "-t" ]] || [[ $1 = "--TEST" ]] || [[ $1 = "-T" 
 	echo "Test Mode Activated"
 	
 	rootdir=$2
-	pattern=$3
 	if [[ ! -d $rootdir ]]; then
 		echo $rootdir "is not a valid directory"
 		exit 1
 	fi
+	shift 2
 	
 else
 	#Check directory, works both path types
 	rootdir=$1
-	pattern=$2
 	if [[ ! -d $rootdir ]]; then
 		echo $rootdir "is not a valid directory"
 		exit 1
 	fi	
+	shift 1
 fi
 
 #Check for files or hidden files matching pattern and removes if not testmode
-for file in $rootdir/$pattern $rootdir/.$pattern; do
-	if [[ -f $file ]]; then
-		if [[ TESTOPT=1 ]]; then
-			echo "Deleting:" $file
-		else
-			echo "Deleting:" $file
-			rm $rootdir/$file
+
+for pattern in "$@"
+do
+	for file in $rootdir/$pattern $rootdir/.$pattern; do
+		if [[ -f $file ]]; then
+			if [[ TESTOPT=1 ]]; then
+				echo "Deleting:" $file
+			else
+				echo "Deleting:" $file
+				rm -f $rootdir/$file
+			fi
 		fi
-	fi
+	done
 done
 
 #On Success

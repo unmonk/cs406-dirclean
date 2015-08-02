@@ -1,76 +1,71 @@
 #!/bin/bash
-#Scott Weaver & Ethan Richardson
-#http://github.com/unmonk
-#CC0 License
-#recursively delete files based on pattern without using find.  CS406 summer
 
 TESTOPT=0
 rootdir=
-pattern=
+
 
 #Check for number of arguments. if less than two or more than three, show usage. 
-if [[ $# -lt 2  ]]; then
-	echo "Usage: rdirclean [--test] ROOT_DIRECTORY 'PATTERN'"
+if [[ $# -lt 2 ]]; then
+	echo "Usage: dirclean [--test] ROOT_DIRECTORY 'PATTERN'"
 	exit 1
 fi
 
 #Force checking for --test / -t instead of using getopt or getopts
 #sets a TESTOPT Variable to true if test is first argument. Otherwise, the first arg is the directory
 if [[ $1 = "--test" ]] ||[[ $1 = "-t" ]] || [[ $1 = "--TEST" ]] || [[ $1 = "-T" ]]; then
-	#If --test supplied, must have 3 or more args instead	
-	if [[ $# -lt 3 ]]; then
-		echo "Usage: rdirclean [--test] ROOT_DIRECTORY 'PATTERN'"
-		exit 1
-	fi
-
 	TESTOPT=1
 	echo "Test Mode Activated"
 	
 	rootdir=$2
-	pattern=$3
 	if [[ ! -d $rootdir ]]; then
 		echo $rootdir "is not a valid directory"
 		exit 1
 	fi
+	shift 2
 	
 else
 	#Check directory, works both path types
 	rootdir=$1
-	pattern=$2
 	if [[ ! -d $rootdir ]]; then
 		echo $rootdir "is not a valid directory"
 		exit 1
 	fi	
+	shift 1
 fi
 
-#Check for files or hidden files matching pattern and removes if not testmode
-for file in $rootdir/$pattern $rootdir/.$pattern; do
-	if [[ -f $file ]]; then
-		if [[ TESTOPT=1 ]]; then
-			echo "Deleting:" $file
-		else
-			echo "Deleting:" $file
-			rm $rootdir/$file
+#Check for files matching pattern and removes if not testmode
+for pattern in "$@"
+do
+	for file in $rootdir/$pattern $rootdir/.$pattern; do
+		if [[ -f $file ]]; then
+			if [[ TESTOPT=1 ]]; then
+				echo "Deleting:" $file
+			else
+				echo "Deleting:" $file
+				rm $rootdir/$file
+			fi
 		fi
-	fi
+	done
 done
 
-#set the path of the script.
 if [[ "$0" = /* ]]; then
 	scriptpath=$0
 else
 	scriptpath=$(pwd)/$0
 fi
 
-#Call the script for each directory in the inital rootdirectory
+
 for directory in $rootdir/*; do
 	if [[ -d $directory ]]; then
-		exec $scriptpath $directory "$pattern"
+		exec $scriptpath "$directory" "$@"
 	fi
 done
 
 
-#On Success
-exit 0
 
-#EOF
+
+
+
+
+
+		
